@@ -15,7 +15,7 @@
 我们欢迎任何人的加入，具体的内容你可以通过访问[贡献指南](https://github.com/yelloxing/image2D/blob/master/CONTRIBUTING.md)来找到你可以参与的部分。当然，任何时候，特别是遇到疑惑，提[issue](https://github.com/yelloxing/image2D/issues)都是不错的选择！
 
 ## 文档和例子
-使用中可以访问[在线接口文档](https://yelloxing.github.io/image2D/)，如果想参与进来，可以访问[开发需知](https://github.com/yelloxing/image2D/blob/master/CONTRIBUTING.md)。
+使用中可以访问[在线接口文档](https://yelloxing.github.io/image2D/index.html)，如果想参与进来，可以访问[开发需知](https://github.com/yelloxing/image2D/blob/master/CONTRIBUTING.md)。
 
 此外，我们还维护了[用例项目](https://github.com/yelloxing/Image-Demo)，你可以访问[在线地址](https://yelloxing.github.io/Image-Demo/index.html)，练习的话，一些有趣的例子可以添加进去。
 
@@ -28,7 +28,7 @@
 如果你开发的是一个web项目，可以通过CDN引入（请选择对应的[版本](https://github.com/yelloxing/image2D/blob/master/CHANGELOG)），在代码中通过image2D或$$调用：
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/image2d@1.5.2/build/image2D.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/image2d@1.6.6/build/image2D.min.js"></script>
 ```
 
 如果你想通过npm方式管理，首先你需要通过命令行安装image2D，就像这样：
@@ -73,7 +73,7 @@ painter.config({
 });
 
 ```
-具体的配置选项请查看[画笔](https://yelloxing.github.io/image2D/#/api/painter)一节。
+具体的配置选项请查看[画笔](https://yelloxing.github.io/image2D/index.html#/api/painter)一节。
 
 - 使用画笔绘制
 
@@ -108,6 +108,10 @@ $$('canvas')
 <img src='https://github.com/yelloxing/image2D/blob/master/docs/src/assets/guider-demo1.png' >
 
 怎么样？是不是很简单，虽然直接使用canvas或svg也可以实现，不过借助这个库绘图会更简单，你可以把更多的精力放在绘制出更有趣的作品上。开发中如果有新功能需要提供，可以点击进入[RFC issue](https://github.com/yelloxing/image2D/issues/18)告知我们，我们会尽快反馈给你结果！
+
+## 图表组件
+
+此外，我们还鼓励你参与基于image2D的图表组件的开发，这样可以加速日常开发并促进交流和推动本项目的改进，具体细节请[点击此处](https://github.com/image2D)进行查看！
 
 ## 开源协议
 

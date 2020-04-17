@@ -4,14 +4,14 @@
 *
 * author 心叶
 *
-* version 1.5.2
+* version 1.6.6
 *
 * build Thu Apr 11 2019
 *
 * Copyright yelloxing
 * Released under the MIT license
 *
-* Date:Fri Jan 10 2020 17:34:16 GMT+0800 (GMT+08:00)
+* Date:Thu Apr 02 2020 17:48:35 GMT+0800 (GMT+08:00)
 */
 
 'use strict';
@@ -1408,8 +1408,10 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         return animation(function (deep) {
             doback(transition_timing_function(deep));
         }, time, function (deep) {
-            if (deep != 1) deep = transition_timing_function(deep);
-            doback(deep);
+            if (isFunction(callback)) {
+                if (deep != 1) deep = transition_timing_function(deep);
+                callback(deep);
+            }
         });
     }
 
@@ -1493,6 +1495,40 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
         return cardinal;
     }
+
+    /**
+     * 返回渲染后的CSS样式值
+     * @param {DOM} dom 目标结点
+     * @param {String} name 属性名称（可选）
+     * @return {String}
+     */
+    function getStyle(dom, name) {
+
+        // 获取结点的全部样式
+        var allStyle = document.defaultView && document.defaultView.getComputedStyle ? document.defaultView.getComputedStyle(dom, null) : dom.currentStyle;
+
+        // 如果没有指定属性名称，返回全部样式
+        return isString(name) ? allStyle.getPropertyValue(name) : allStyle;
+    }
+
+    // 把颜色统一转变成rgba(x,x,x,x)格式
+    // 返回数字数组[r,g,b,a]
+    var formatColor = function formatColor(color) {
+        var colorNode = document.getElementsByTagName('head')[0];
+        colorNode.style['color'] = color;
+        var rgba = getStyle(colorNode, 'color');
+        var rgbaArray = rgba.replace(/^rgba?\(([^)]+)\)$/, '$1').split(new RegExp('\\,' + REGEXP.whitespace));
+        return [+rgbaArray[0], +rgbaArray[1], +rgbaArray[2], rgbaArray[3] == undefined ? 1 : +rgbaArray[3]];
+    };
+
+    // 获取一组随机色彩
+    var getRandomColors = function getRandomColors(num) {
+        var temp = [];
+        for (var flag = 1; flag <= num; flag++) {
+            temp.push('rgb(' + (Math.random(1) * 230 + 20).toFixed(0) + ',' + (Math.random(1) * 230 + 20).toFixed(0) + ',' + (Math.random(1) * 230 + 20).toFixed(0) + ')');
+        }
+        return temp;
+    };
 
     /**
      * 把当前维护的结点加到目标结点内部的结尾
@@ -1589,21 +1625,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         if (this.length <= 0) throw new Error('Target empty!');
         return this[0].textContent;
     };
-
-    /**
-     * 返回渲染后的CSS样式值
-     * @param {DOM} dom 目标结点
-     * @param {String} name 属性名称（可选）
-     * @return {String}
-     */
-    function getStyle(dom, name) {
-
-        // 获取结点的全部样式
-        var allStyle = document.defaultView && document.defaultView.getComputedStyle ? document.defaultView.getComputedStyle(dom, null) : dom.currentStyle;
-
-        // 如果没有指定属性名称，返回全部样式
-        return isString(name) ? allStyle.getPropertyValue(name) : allStyle;
-    }
 
     /**
      * 设置或获取样式
@@ -1904,9 +1925,17 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         // 获取canvas2D画笔
         var painter = canvas.getContext("2d");
 
-        var width = canvas.clientWidth || canvas.getAttribute('width'),
+        var isLayer = canvas.__image2D__layer__ == 'yes';
+
+        // 图层是内部的，明确获取方法
+        // 对外的一律使用clientXXX，区分是否显示
+        var width = isLayer ? canvas.getAttribute('width') : canvas.clientWidth,
             //内容+内边距
-        height = canvas.clientHeight || canvas.getAttribute('height');
+        height = isLayer ? canvas.getAttribute('height') : canvas.clientHeight;
+
+        if (width == 0 || height == 0) {
+            throw new Error('Canvas is hidden or size is zero!');
+        }
 
         // 设置显示大小
         canvas.style.width = width + "px";
@@ -2497,6 +2526,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
                     layer[id].canvas.setAttribute('width', width);
                     layer[id].canvas.setAttribute('height', height);
 
+                    // 标记是图层
+                    layer[id].canvas.__image2D__layer__ = 'yes';
+
                     layer[id].painter = image2D(layer[id].canvas).painter();
 
                     layer_index.push(id);
@@ -2556,11 +2588,14 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         // 二维简单变换
         rotate: _rotate2, move: _move2, scale: _scale2, dot: dot,
 
-        // 工具类
+        // 动画类
         animation: animation$1,
 
         // 插值类计算
-        cardinal: cardinal
+        cardinal: cardinal,
+
+        // 色彩类
+        formatColor: formatColor, getRandomColors: getRandomColors
 
     });
     image2D.prototype.extend({
