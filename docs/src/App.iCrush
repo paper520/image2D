@@ -3,25 +3,32 @@
         <nav>
             <span title='一个帮助你快速绘制二维图形的ES库'>image2D</span>
             <ul>
-                <li @click='openRouter("guide")' class='menu-1 guide'>
+                <li title='首页' @click='openRouter("guide")' class='menu-1 guide'>
                     首页
                 </li>
-                <li @click='openRouter("api")' class='menu-1 api'>
+                <li title='接口文档' @click='openRouter("api")' class='menu-1 api'>
                     文档
                 </li>
-                <li @click='openRouter("QA")' class='menu-1 QA'>
+                <li title='汇集的一些常用答疑' @click='openRouter("QA")' class='menu-1 QA'>
                     答疑Q&A
                 </li>
-                <li class='menu-1' onclick="window.location.href='https://github.com/yelloxing/image2D/issues'">
+                <li class="line"></li>
+                <li title='一些绘制的图形用例' class='menu-1'
+                    onclick="window.location.href='http://yelloxing.gitee.io/image2d-examples/'">
+                    用例
+                </li>
+                <li title='任何疑惑都可以在这里提问' class='menu-1'
+                    onclick="window.location.href='https://github.com/yelloxing/image2D/issues'">
                     提问
                 </li>
-                <li onclick="window.location.href='https://github.com/yelloxing/image2D'" class='git-url' title='image2D 源码'>
+                <li onclick="window.location.href='https://github.com/yelloxing/image2D'" class='git-url'
+                    title='image2D 源码'>
                     Fork-me-on-Github
                 </li>
                 <li class="editor" @click="openEdit()" title='修复文档中的错误'>编辑</li>
-                <li onclick="window.location.href='https://github.com/image2D'" title='Github Organization'>
+                <li onclick="window.location.href='https://www.oschina.net/p/image2d'" title='Open Source China'>
                     <span>
-                        访问组织
+                        开源中国
                     </span>
                 </li>
             </ul>
@@ -48,9 +55,21 @@
                 this.goRouter(page => this.page = page, [pagename]);
             },
             openEdit() {
+
+                let fileurl;
+
+                try {
+                    fileurl = window.location.href.split("#")[1].replace(/\/$/, "").replace(/\?.{0,}$/, '').replace(/^\//, "");
+                    if (fileurl == 'api') {
+                        fileurl = "api/how-to-use";
+                    }
+                } catch (e) {
+                    fileurl = 'guide';
+                }
+
                 window.location.href =
                     "https://github.com/yelloxing/image2D/edit/dev/docs/src/Pages/" +
-                    window.location.href.split("#")[1].replace(/\/$/, "").replace(/\?.{0,}$/, '') +
+                    fileurl +
                     ".iCrush";
             }
         }
@@ -91,6 +110,13 @@
                     cursor: pointer;
                     font-weight: bold;
                     height: 100%;
+
+                    &.line {
+                        height: .44rem;
+                        padding: 0;
+                        border-left: 1px dashed rgb(199, 199, 207);
+                        margin: 0 .1rem;
+                    }
 
                     &[active='yes'] {
                         color: red;
