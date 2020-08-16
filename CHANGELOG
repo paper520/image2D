@@ -143,3 +143,28 @@ v1.6.6
     changes:
       -  添加颜色格式化方法formatColor（把颜色统一转变成rgba(x,x,x,x)格式，返回数字数组[r,g,b,a]）
       -  添加一组随机色彩获取方法getRandomColors
+v1.6.8
+    date:2020-04-22
+    changes:
+      -  针对使用SVG绘图，添加更健壮的错误提示
+v1.7.0
+    date:2020-06-07
+    changes:
+      -  删除早已废弃的image2d-cli命令以减小安装大小
+v1.7.1
+    date:2020-06-18
+    changes:
+      -  修复由于没有显示而导致浏览器未渲染的canvas无法绘制图片问题
+v1.7.2
+    date:2020-06-19
+    changes:
+      -  丰富静态方法（stopPropagation + preventDefault）
+      -  丰富结点对象方法（unbind + size）
+v1.8.0
+    date:2020-08-04
+    changes:
+      -  修复canvas画笔的路径方法arc最后一个参数deg为负的时候绘制方向错误问题
+v1.8.2
+    date:2020-08-14
+    changes:
+      -  添加对虚线设置的支持：https://github.com/yelloxing/image2D/issues/35
